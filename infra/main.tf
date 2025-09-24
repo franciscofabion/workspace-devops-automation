@@ -85,7 +85,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   size                            = "Standard_B1s"
   admin_username                  = "azureuser"
   admin_password                  = var.admin_password
-  disable_password_authentication = false
+  disable_password_authentication = false  # mantenha false se quiser senha
 
   network_interface_ids = [
     azurerm_network_interface.nic.id
@@ -102,4 +102,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
     sku       = "20_04-lts"
     version   = "latest"
   }
+
+  # Gerando uma chave ssh junto com a senha
+  admin_ssh_key {
+    username   = "azureuser"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
 }
+
